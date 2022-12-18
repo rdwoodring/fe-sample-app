@@ -8,10 +8,6 @@ import {
 } from './useAppDispatch';
 
 import {
-    useAppSelector
-} from './useAppSelector';
-
-import {
     visitRoute
 } from '../redux/reducers/visitedRoutes';
 
