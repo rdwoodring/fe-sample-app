@@ -70,6 +70,7 @@ function NavBar(props: Props) {
                 background: '#0c2975',
                 padding: '16px',
                 width: '200px',
+                minWidth: '200px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
