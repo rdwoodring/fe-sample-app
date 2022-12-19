@@ -8,6 +8,7 @@ import PolicyHoldersView, {
 import {
     screen
 } from '@testing-library/react'
+import userEvent from '@testing-library/user-event';
 
 let defaultProps: Props,
     reduxData: any;
@@ -41,6 +42,76 @@ beforeEach(() => {
              
         } as AxiosResponse);
     })
+
+    jest.spyOn(policyHoldersApi, 'savePolicyHolder').mockImplementation(() => {
+        return Promise.resolve({
+            data: {
+                policyHolders: [
+                    {
+                        name: "Mrs. Holder",
+                        age: 29,
+                        address: {
+                            line1: "123 Lane Ave",
+                            line2: "3H",
+                            city: "Santa Monica",
+                            state: "CA",
+                            postalCode: "90405",
+                        },
+                        phoneNumber: "1-989-989-9898",
+                        isPrimary: true,
+                    },
+                    {
+                        name: 'Luke Skywalker',
+                        address: {
+                            line1: '1 Burned Moisture Farm',
+                            line2: 'sand',
+                            city: 'Near Mos Eisley',
+                            state: 'TT',
+                            postalCode: '12345'
+                        },
+                        age: 18,
+                        isPrimary: false,
+                        phoneNumber: '111-JEDI-4-HIRE'
+                    }
+                ]
+            }
+             
+        } as AxiosResponse);
+    })
+});
+
+it('should render an add a policyholder button', () => {
+    renderWithProviders(
+        <PolicyHoldersView {...defaultProps} />,
+        {},
+        {
+            initialEntries: ['/policyholders']
+        },
+        reduxData
+    );
+
+    expect(screen.getByRole('button', {
+        name: 'Add a policyholder'
+    })).toBeTruthy();
+});
+
+describe('when clicking the add a policy holder button', () => {
+    it('should call savePolicyHolder', () => {
+        renderWithProviders(
+            <PolicyHoldersView {...defaultProps} />,
+            {},
+            {
+                initialEntries: ['/policyholders']
+            },
+            reduxData
+        );
+    
+        userEvent.click(screen.getByRole('button', {
+            name: 'Add a policyholder'
+        }));
+
+        expect(policyHoldersApi.savePolicyHolder).toHaveBeenCalled();
+    });
 });
 
 describe('when the component mounts', () => {

@@ -14,6 +14,15 @@ function getPolicyHolders() {
     }>(url.href);
 }
 
+function savePolicyHolder(policyHolder: Omit<PolicyHolder, 'isPrimary'>) {
+    const url = new URL('api/policyholders', baseUrlRaw);
+
+    return axios.post<{
+        policyHolders: PolicyHolder[]
+    }>(url.href, policyHolder);
+}
+
 export {
-    getPolicyHolders
+    getPolicyHolders,
+    savePolicyHolder
 };

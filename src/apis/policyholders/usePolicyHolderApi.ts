@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import {
-    getPolicyHolders
+    getPolicyHolders, savePolicyHolder
 } from './policyHolderApi';
 
 import {
@@ -31,14 +31,31 @@ function usePolicyHolderApi() {
             return response;
         }, [
             dispatch
+        ]),
+        savePolicyHolderWrapped = useCallback<typeof savePolicyHolder>(async (policyHolder) => {
+            const response = await savePolicyHolder(policyHolder),
+                {
+                    data: {
+                        policyHolders
+                    }
+                } = response,
+                normalized = normalize<UnwrapArray<typeof policyHolders>>('name', policyHolders);
+
+            dispatch(addPolicyHolders(normalized));
+
+            return response;
+        }, [
+            dispatch
         ]);
 
     return useMemo(() => {
         return {
-            getPolicyHolders: getPolicyHoldersWrapped
+            getPolicyHolders: getPolicyHoldersWrapped,
+            savePolicyHolder: savePolicyHolderWrapped
         }
     }, [
-        getPolicyHoldersWrapped
+        getPolicyHoldersWrapped,
+        savePolicyHolderWrapped
     ]);
 }
 

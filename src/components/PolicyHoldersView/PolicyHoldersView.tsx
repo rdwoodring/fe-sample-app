@@ -5,8 +5,9 @@ import useLoadUntilDataExists from '../../hooks/useLoadingUntilDataExists';
 import useOnInitialRouteMount from '../../hooks/useOnInitialRouteMount';
 import { UnwrapArray, UnwrapRecord } from '../../utils/types';
 
-import {Box} from '@mui/material';
+import {Box, Button} from '@mui/material';
 import InfoTable from '../InfoTable';
+import { useCallback } from 'react';
 
 type Props = {
 
@@ -22,10 +23,27 @@ const fieldLabelPrettyTranslation = {
 
 function PolicyHoldersView(props: Props) {
     const {
-        getPolicyHolders
+        getPolicyHolders,
+        savePolicyHolder
     } = usePolicyHolderApi(),
     policyHolders = useAppSelector(state => state.policyHolders),
-    loading = useLoadUntilDataExists(policyHolders);
+    loading = useLoadUntilDataExists(policyHolders),
+    handleAddNewPolicyHolder = useCallback(async () => {
+        await savePolicyHolder({
+            name: 'Luke Skywalker',
+            address: {
+                line1: '1 Burned Moisture Farm',
+                line2: 'sand',
+                city: 'Near Mos Eisley',
+                state: 'TT',
+                postalCode: '12345'
+            },
+            age: 18,
+            phoneNumber: '111-JEDI-4-HIRE'
+        });
+    }, [
+        savePolicyHolder
+    ]);
 
     useOnInitialRouteMount(getPolicyHolders);
 
@@ -61,7 +79,7 @@ function PolicyHoldersView(props: Props) {
                 }
             });
 
-            return <InfoTable header={policyHolder.name} rows={rows} />
+            return <InfoTable key={policyHolder.name} header={policyHolder.name} rows={rows} />
         }
         
         return Object.values(policyHolders).map(generatePolicyHolderInfoTable)
@@ -80,8 +98,20 @@ function PolicyHoldersView(props: Props) {
     }
 
     return (
-        <Box sx={{textAlign: 'center'}}>
-            {markup}
+        <Box>
+            <Box sx={{textAlign: 'center'}}>
+                {markup}
+            </Box>
+            <Box>
+                <Button
+                    onClick={handleAddNewPolicyHolder}
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                >
+                    Add a policyholder
+                </Button>
+            </Box>
         </Box>
     );
 }
