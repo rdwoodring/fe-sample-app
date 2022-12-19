@@ -79,7 +79,13 @@ function PolicyHoldersView(props: Props) {
                 }
             });
 
-            return <InfoTable key={policyHolder.name} header={policyHolder.name} rows={rows} />
+            return (
+                <Box key={policyHolder.name} sx={{
+                    paddingBottom: '32px'
+                }}>
+                    <InfoTable header={policyHolder.name} rows={rows} />
+                </Box>
+            )
         }
         
         return Object.values(policyHolders).map(generatePolicyHolderInfoTable)
@@ -102,7 +108,10 @@ function PolicyHoldersView(props: Props) {
             <Box sx={{textAlign: 'center'}}>
                 {markup}
             </Box>
-            <Box>
+            <Box sx={{
+                paddingTop: '16px',
+                textAlign: 'center'
+            }}>
                 <Button
                     onClick={handleAddNewPolicyHolder}
                     variant="contained"
