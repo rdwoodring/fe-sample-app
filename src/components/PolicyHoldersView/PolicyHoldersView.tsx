@@ -5,7 +5,7 @@ import useLoadUntilDataExists from '../../hooks/useLoadingUntilDataExists';
 import useOnInitialRouteMount from '../../hooks/useOnInitialRouteMount';
 import { UnwrapArray, UnwrapRecord } from '../../utils/types';
 
-import {Box, Button} from '@mui/material';
+import {Box, Button, List, ListItem, Typography, ListItemText, ListSubheader} from '@mui/material';
 import InfoTable from '../InfoTable';
 import { useCallback } from 'react';
 
@@ -120,6 +120,57 @@ function PolicyHoldersView(props: Props) {
                 >
                     Add a policyholder
                 </Button>
+            </Box>
+
+            <Box sx={{
+                paddingTop: '16px'
+            }}>
+                <List>
+                    <ListSubheader>
+                        Remaining TODOs:
+                    </ListSubheader>
+                    <ListItem>
+                        <ListItemText>
+                            Add more granular tests to all of the hooks created (mostly tested right now through the components that use them)
+                        </ListItemText>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText>
+                            Create a generic utility for normalizing and inserting data into redux
+                        </ListItemText>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText>
+                            Sync with the back end team on providing a unique identifier with each policy holder record
+                        </ListItemText>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText>
+                            Handle currently un handled case where no results are returned from the policy holder request
+                        </ListItemText>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText>
+                            Better handling of loading state during initial get request for policy holders
+                        </ListItemText>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText>
+                            Better handling of loading state during post request to save new policy holder
+                        </ListItemText>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText>
+                            Add error handling and provide error messages to end users when get/post requests fail
+                        </ListItemText>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText>
+                            General sweep for accessibility gaps like low contrast, missing semantic elements/aria/roles
+                        </ListItemText>
+                    </ListItem>
+                    
+                </List>
             </Box>
         </Box>
     );
