@@ -4,7 +4,7 @@ import {
 } from './policyHolderApi';
 
 import {
-    addPolicyHolders
+    addPolicyHolders, PolicyHolder
 } from '../../redux/reducers/policyHolders';
 
 import {
@@ -16,21 +16,28 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 function usePolicyHolderApi() {
     const dispatch = useAppDispatch(),
+        // TODO: this will become a more generalized utility function
+        // as we add more entity types to the app (i.e. policies etc.)
+        normalizeAndInsert = useCallback((policyHolders: PolicyHolder[]) => {
+            const normalized = normalize<UnwrapArray<typeof policyHolders>>('name', policyHolders);
+
+            dispatch(addPolicyHolders(normalized));
+        }, [
+            dispatch
+        ]),
         getPolicyHoldersWrapped = useCallback<typeof getPolicyHolders>(async () => {
             const response = await getPolicyHolders(),
                 {
                     data: {
                         policyHolders
                     }
-                } = response,
-                
-            normalized = normalize<UnwrapArray<typeof policyHolders>>('name', policyHolders);
+                } = response;
 
-            dispatch(addPolicyHolders(normalized));
+            normalizeAndInsert(policyHolders);
 
             return response;
         }, [
-            dispatch
+            normalizeAndInsert
         ]),
         savePolicyHolderWrapped = useCallback<typeof savePolicyHolder>(async (policyHolder) => {
             const response = await savePolicyHolder(policyHolder),
@@ -38,14 +45,13 @@ function usePolicyHolderApi() {
                     data: {
                         policyHolders
                     }
-                } = response,
-                normalized = normalize<UnwrapArray<typeof policyHolders>>('name', policyHolders);
+                } = response;
 
-            dispatch(addPolicyHolders(normalized));
+            normalizeAndInsert(policyHolders);
 
             return response;
         }, [
-            dispatch
+            normalizeAndInsert
         ]);
 
     return useMemo(() => {
