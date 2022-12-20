@@ -169,6 +169,11 @@ function PolicyHoldersView(props: Props) {
                             General sweep for accessibility gaps like low contrast, missing semantic elements/aria/roles
                         </ListItemText>
                     </ListItem>
+                    <ListItem>
+                        <ListItemText>
+                            Fix the updated testing utilities to be composed in a more sane fashion but still support granular options into MemoryRouter and Redux
+                        </ListItemText>
+                    </ListItem>
                     
                 </List>
             </Box>
